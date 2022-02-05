@@ -3,7 +3,7 @@
 //using UnityEngine;
 
 /// <summary>
-/// Class Passage
+/// Class MazePassage
 /// </summary>
 public class MazePassage : MazeCellEdge
 {

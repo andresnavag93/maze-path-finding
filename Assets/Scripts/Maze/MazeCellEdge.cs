@@ -8,9 +8,9 @@ using UnityEngine;
 public abstract class MazeCellEdge : MonoBehaviour
 {
     public MazeCell cell, otherCell;
-
     public MazeDirection direction;
 
+    #region Functions
     public void Initialize(MazeCell cell, MazeCell otherCell, MazeDirection direction)
     {
         this.cell = cell;
@@ -21,4 +21,5 @@ public abstract class MazeCellEdge : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = direction.ToRotation();
     }
+    #endregion
 }

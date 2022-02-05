@@ -41,6 +41,7 @@ public class MazeCell : MonoBehaviour
         }
     }
 
+    #region Functions
     public void SetEdge(MazeDirection direction, MazeCellEdge edge)
     {
         edges[(int)direction] = edge;
@@ -61,6 +62,7 @@ public class MazeCell : MonoBehaviour
         }
         return allPassages;
     }
+    #endregion
 
 }
 

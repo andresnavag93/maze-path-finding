@@ -206,15 +206,11 @@ public class PathFinding : MonoBehaviour
         }
     }
 
-    
-
     private int CalculateHCost(int2 startPos, int2 endPos)
     {
         int xDistance = math.abs(startPos.x - endPos.x);
         int yDistance = math.abs(startPos.y - endPos.y);
-
         int remaining = math.abs(xDistance - yDistance);
-
         return MOVE_DIAGONAL_COST * math.min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
     }
 

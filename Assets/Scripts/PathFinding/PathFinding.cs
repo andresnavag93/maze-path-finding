@@ -34,7 +34,19 @@ public class PathFinding : MonoBehaviour
         { 
             return mazeSize; 
         } 
+        set { 
+            mazeSize = value; 
+        }
     }
+
+    public List<Vector2Int> PathV
+    {
+        get
+        {
+            return pathV;
+        }
+    }
+
 
     public void SetStartPosition(Vector2Int pos)
     {
@@ -52,8 +64,11 @@ public class PathFinding : MonoBehaviour
         return x + y * width;
     }
 
-    public List<Vector2Int> FindPath(MazeCell[,] cells)
+    public List<Vector2Int> FindPath(MazeCell[,] mazeCells)
     {
+        // Clean Previous Paths
+        ResetPathV();
+
         NativeArray<PathNode> pathNodeArray = new NativeArray<PathNode>(mazeSize.x * mazeSize.y, Allocator.Temp);
 
         //Create all nodes
@@ -117,7 +132,7 @@ public class PathFinding : MonoBehaviour
             // Add the node to the closed list
             closedList.Add(currentNodeIndex);
 
-            List<MazePassage> neighborCells = cells[currentNode.x, currentNode.y].AllPassage();
+            List<MazePassage> neighborCells = mazeCells[currentNode.x, currentNode.y].AllPassage();
 
             //Node Neighbors search
             for (int i = 0; i < neighborCells.Count; i++)
@@ -167,7 +182,7 @@ public class PathFinding : MonoBehaviour
             {
                 Vector2Int pathPos = new Vector2Int(path[i].x, path[i].y);
 
-                cells[pathPos.x, pathPos.y].gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+                mazeCells[pathPos.x, pathPos.y].gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
                 pathV.Add(pathPos);
             }
 
@@ -227,6 +242,14 @@ public class PathFinding : MonoBehaviour
             }
         }
         return lowestCostPathNode.index;
+    }
+
+    public void ResetPathV()
+    {
+        while (pathV.Count > 0)
+        {
+            pathV.RemoveAt(0);
+        }
     }
     #endregion
 }

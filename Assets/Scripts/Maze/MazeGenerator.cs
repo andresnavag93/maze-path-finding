@@ -14,7 +14,21 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] MazeWall mazeWallPrefab;
 
     MazeCell[,] mazeCells;
-    public MazeCell[,] MazeCells { get { return mazeCells; } }
+    public MazeCell[,] MazeCells
+    {
+        get
+        {
+            return mazeCells;
+        }
+    }
+
+    public Vector2Int MazeSize
+    {
+        get
+        {
+            return mazeSize;
+        }
+    }
 
     #region Functions
     public void Generate()

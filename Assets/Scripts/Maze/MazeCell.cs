@@ -62,6 +62,7 @@ public class MazeCell : MonoBehaviour
         }
         return allPassages;
     }
+
     #endregion
 
 }

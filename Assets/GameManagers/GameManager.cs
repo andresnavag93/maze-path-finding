@@ -7,8 +7,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     
     [SerializeField] Vector2Int endPos;
-    [SerializeField] GameObject player;
-    [SerializeField] GameObject destinationObj;
+    [SerializeField] GameObject player, destinationObj, startObj;
     [SerializeField] Transform mazeGridParent;
     [SerializeField] MazeGenerator mazeGenerator;
     [SerializeField] PathFinding pathFinding;
@@ -37,17 +36,22 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         mazeGenerator.Generate();
+        pathFinding.MazeSize = mazeGenerator.MazeSize;
         InitialSetup();
     }
 
     void InitialSetup()
     {
         GetAllNode();
-        Vector2Int randomEndPos = new Vector2Int(4, 4);
+        Vector2Int mazeSize = pathFinding.MazeSize;
+        Vector2Int randomEndPos = new Vector2Int(mazeSize.x-1, mazeSize.y-1);
         pathFinding.SetEndPosition(randomEndPos);
         destinationObj.transform.position = mazeCells[randomEndPos.x, randomEndPos.y].gameObject.transform.position;
+        destinationObj.SetActive(true);
         player.transform.position = mazeCells[0, 0].gameObject.transform.position;
         player.SetActive(true);
+        startObj.transform.position = mazeCells[0, 0].gameObject.transform.position;
+        startObj.SetActive(true);
     }
 
     public void GetAllNode()
@@ -65,6 +69,10 @@ public class GameManager : MonoBehaviour
 
     public void ActivatePathFinding()
     {
+        MazeCell curCell = player.GetComponent<PlayerMovement>().CurrentCell;
+        pathFinding.SetStartPosition(new Vector2Int(curCell.position.x, curCell.position.y));
+
+        CleanExistingPathInMazeGenerator();
         List<Vector2Int> path = pathFinding.FindPath(mazeCells);
         int length = path.Count;
         Vector2[] pathInWorldPos = new Vector2[length];
@@ -73,6 +81,24 @@ public class GameManager : MonoBehaviour
         {
             pathInWorldPos[length - i - 1] = mazeCells[path[i].x, path[i].y].transform.position;
         }
+    }
+
+    private void CleanExistingPathInMazeGenerator()
+    {
+        foreach (Vector2Int mazeCellPos in pathFinding.PathV)
+        {
+            mazeCells[mazeCellPos.x, mazeCellPos.y].gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
+
+        }
+    }
+
+    public void ResetGame()
+    {
+        pathFinding.ResetPathV();
+        mazeGenerator.Generate();
+        GetAllNode();
+        player.transform.position = mazeCells[0, 0].gameObject.transform.position;
+        player.SetActive(true);
     }
 
 }

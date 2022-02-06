@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Destination
   - Maze Cell
+  - Banana
   layers:
   - Default
   - TransparentFX

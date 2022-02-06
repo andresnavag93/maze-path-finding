@@ -55,13 +55,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.tag == "Destination")
-       {
+        if (collision.tag == "Destination")
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-       }
+        }
         if (collision.CompareTag("Maze Cell"))
         {
             SetCell(collision.GetComponent<MazeCell>());
+        }
+        if (collision.CompareTag("Banana"))
+        {
+            collision.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Banana"))
+        {
+            collision.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform mazeGridParent;
     [SerializeField] MazeGenerator mazeGenerator;
     [SerializeField] PathFinding pathFinding;
+    [SerializeField] CameraFollow cameraFollow;
     MazeCell[,] mazeCells;
 
     public static GameManager Instance
@@ -99,6 +100,7 @@ public class GameManager : MonoBehaviour
         GetAllNode();
         player.transform.position = mazeCells[0, 0].gameObject.transform.position;
         player.SetActive(true);
+        cameraFollow.ResetCameraPosition();
     }
 
 }

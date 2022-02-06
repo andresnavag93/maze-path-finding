@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
+/// <summary>
+/// Ui Manager
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     public Rigidbody2D playerRigidbody; 
@@ -11,7 +11,8 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        if (Application.platform == RuntimePlatform.Android || 
+            Application.platform == RuntimePlatform.IPhonePlayer)
         {
             for (int i = 0; i < buttons.Length; i++)
             {

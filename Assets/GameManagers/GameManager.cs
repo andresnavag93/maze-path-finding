@@ -1,7 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Game Manager
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region Mono
     private void Awake()
     {
         if (instance == null)
@@ -40,7 +43,9 @@ public class GameManager : MonoBehaviour
         pathFinding.MazeSize = mazeGenerator.MazeSize;
         InitialSetup();
     }
+    #endregion
 
+    #region Functions
     void InitialSetup()
     {
         GetAllNode();
@@ -102,5 +107,6 @@ public class GameManager : MonoBehaviour
         player.SetActive(true);
         cameraFollow.ResetCameraPosition();
     }
+    #endregion
 
 }

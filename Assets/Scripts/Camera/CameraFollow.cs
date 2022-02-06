@@ -1,30 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Camera Follow
+/// </summary>
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    public Vector3 offset = new Vector3(0.2f, 0.0f, -10f);
+    public Vector3 offset = new Vector3(0.0f, 0.0f, -10f);
     public float dampingTime = 0.3f;
     public Vector3 velocity = Vector3.zero;
 
+    #region Mono
     void Awake()
     {
         Application.targetFrameRate = 60;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
         MoveCamera(true);
     }
 
+    #endregion
+
+    #region Functions
     public void ResetCameraPosition()
     {
         MoveCamera(false);
@@ -50,4 +49,5 @@ public class CameraFollow : MonoBehaviour
             this.transform.position = destination;
         }
     }
+    #endregion
 }

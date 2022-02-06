@@ -1,23 +1,26 @@
-//using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Collections;
 
+/// <summary>
+/// Path Node
+/// </summary>
 struct PathNode
 {
     public int x, y, index;
     public int gCost, hCost, fCost;
-    // The node index where this node comes
     public int parentIndex;
 
-    // public bool isWalkable;
     public void CalculateFCost()
     {
         fCost = gCost + hCost;
     }
 }
 
+/// <summary>
+/// Path Finding
+/// </summary>
 public class PathFinding : MonoBehaviour
 {
     const int MOVE_STRAIGHT_COST = 10;
@@ -47,6 +50,7 @@ public class PathFinding : MonoBehaviour
         }
     }
 
+    #region Functions
 
     public void SetStartPosition(Vector2Int pos)
     {
@@ -57,8 +61,7 @@ public class PathFinding : MonoBehaviour
     {
         endPosition = new int2(pos.x, pos.y);
     }
-
-    #region Functions
+   
     private int CalculateIndex(int x, int y, int width)
     {
         return x + y * width;
@@ -86,7 +89,7 @@ public class PathFinding : MonoBehaviour
                 pathNode.hCost = CalculateHCost(new int2(x, y), endPosition);
                 pathNode.CalculateFCost();
 
-                //Invalid at default
+                //Set -1 as default parent index
                 pathNode.parentIndex = -1;
                 pathNodeArray[pathNode.index] = pathNode;
             }
@@ -119,7 +122,7 @@ public class PathFinding : MonoBehaviour
                 break;
             }
 
-            //If path not found, remove current node from openlist array
+            // If path not found, remove current node from openlist array
             for (int i = 0; i < openList.Length; i++)
             {
                 if (openList[i] == currentNodeIndex)
@@ -134,7 +137,7 @@ public class PathFinding : MonoBehaviour
 
             List<MazePassage> neighborCells = mazeCells[currentNode.x, currentNode.y].AllPassage();
 
-            //Node Neighbors search
+            // Node Neighbors search
             for (int i = 0; i < neighborCells.Count; i++)
             {
                 MazeCell neighborCell = neighborCells[i].otherCell;
@@ -171,11 +174,11 @@ public class PathFinding : MonoBehaviour
         PathNode endNode = pathNodeArray[endNodeIndex];
         if (endNode.parentIndex == -1)
         {
-            //Path not found
+            // Path not found
         }
         else
         {
-            //Path founded
+            // Path found
             NativeList<int2> path = CalculatePath(pathNodeArray, endNode);
 
             for (int i = 0; i < path.Length; i++)
@@ -189,7 +192,7 @@ public class PathFinding : MonoBehaviour
             path.Dispose();
         }
 
-        //Dispose all temp array
+        // Dispose all temp array
         openList.Dispose();
         closedList.Dispose();
         pathNodeArray.Dispose();
@@ -201,12 +204,12 @@ public class PathFinding : MonoBehaviour
     {
         if (endNode.parentIndex == -1)
         {
-            //Path not found
+            // Path not found
             return new NativeList<int2>(Allocator.Temp);
         }
         else
         {
-            //Path found
+            // Path found
             NativeList<int2> path = new NativeList<int2>(Allocator.Temp);
             path.Add(new int2(endNode.x, endNode.y));
 

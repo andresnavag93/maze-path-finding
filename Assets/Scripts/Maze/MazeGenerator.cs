@@ -1,4 +1,3 @@
-//using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +40,6 @@ public class MazeGenerator : MonoBehaviour
         {
             DoNextGenerationStep(activeCells);
         }
-
     }
 
     private void ResetMaze()
@@ -56,10 +54,15 @@ public class MazeGenerator : MonoBehaviour
     {
         MazeCell newMazeCell = Instantiate(mazeCellPrefab) as MazeCell;
         mazeCells[pos.x, pos.y] = newMazeCell;
-        newMazeCell.name = "Maze Cell [" + pos.x + "," + pos.y + "]";
+        //newMazeCell.name = "Maze Cell [" + pos.x + "," + pos.y + "]";
+        newMazeCell.name = string.Format("Maze Cell [{0},{1}]", pos.x, pos.y);
         newMazeCell.position = pos;
         newMazeCell.transform.parent = transform;
-        newMazeCell.transform.localPosition = new Vector3(pos.x - mazeSize.x * offsetX + offsetX, pos.y - mazeSize.y * offsetY + offsetY, 0f);
+        newMazeCell.transform.localPosition = new Vector3(
+            pos.x - mazeSize.x * offsetX + offsetX, 
+            pos.y - mazeSize.y * offsetY + offsetY, 
+            0f
+            );
 
         return newMazeCell;
     }
@@ -79,7 +82,10 @@ public class MazeGenerator : MonoBehaviour
 
     public bool ContainsCoordinates(Vector2Int coordinate)
     {
-        return coordinate.x >= 0 && coordinate.x < mazeSize.x && coordinate.y >= 0 && coordinate.y < mazeSize.y;
+        return coordinate.x >= 0 && 
+            coordinate.x < mazeSize.x && 
+            coordinate.y >= 0 && 
+            coordinate.y < mazeSize.y;
     }
 
     public MazeCell GetMazeCell(Vector2Int coordinates)
@@ -87,7 +93,8 @@ public class MazeGenerator : MonoBehaviour
         return mazeCells[coordinates.x, coordinates.y];
     }
 
-    private void CreateMazePassage(MazeCell cell, MazeCell otherCell, MazeDirection direction)
+    private void CreateMazePassage(MazeCell cell, MazeCell otherCell, 
+        MazeDirection direction)
     {
         MazePassage newMazePassage = Instantiate(mazePassagePrefab) as MazePassage;
         newMazePassage.Initialize(cell, otherCell, direction);
@@ -118,7 +125,8 @@ public class MazeGenerator : MonoBehaviour
         }
 
         MazeDirection direction = currentCell.RandomUninitializedDirection;
-        Vector2Int coordinates = currentCell.position + MazeDirections.MazeDirectionToVector2Int(direction);
+        Vector2Int coordinates = currentCell.position + 
+            MazeDirections.MazeDirectionToVector2Int(direction);
 
         if (ContainsCoordinates(coordinates))
         {

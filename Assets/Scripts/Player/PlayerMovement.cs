@@ -1,16 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Player Movement
+/// </summary>
 public class PlayerMovement : MonoBehaviour
 {
+    const string HORIZONTAL = "Horizontal";
+    const string VERTICAL = "Vertical";
+    const string DESTINATION_TAG = "Destination";
+    const string MAZE_CELL_TAG = "Maze Cell";
+    const string BANANA_TAG = "Banana";
+
     public bool isOnUiButtonPress = false;
+    private bool walking = false;
     private Rigidbody2D playerRigidbody;
     public float speed = 1.0f;
-    private bool walking = false;
-    private const string horizontal = "Horizontal";
-    private const string vertical = "Vertical";
     public Vector2 movement = Vector2.zero;
 
     [SerializeField] MazeCell curCell;
@@ -32,12 +37,12 @@ public class PlayerMovement : MonoBehaviour
         if (!isOnUiButtonPress)
         {
             walking = false;
-            if (Mathf.Abs(Input.GetAxisRaw(horizontal)) > 0.5f ||
-                    Mathf.Abs(Input.GetAxisRaw(vertical)) > 0.5)
+            if (Mathf.Abs(Input.GetAxisRaw(HORIZONTAL)) > 0.5f ||
+                    Mathf.Abs(Input.GetAxisRaw(VERTICAL)) > 0.5)
             {
                 walking = true;
-
-                movement = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
+                movement = new Vector2(Input.GetAxisRaw(HORIZONTAL), 
+                    Input.GetAxisRaw(VERTICAL));
                 movement = movement * speed;
             }
             if (!walking)
@@ -55,15 +60,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Destination")
+        if (collision.tag == DESTINATION_TAG)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        if (collision.CompareTag("Maze Cell"))
+        if (collision.CompareTag(MAZE_CELL_TAG))
         {
             SetCell(collision.GetComponent<MazeCell>());
         }
-        if (collision.CompareTag("Banana"))
+        if (collision.CompareTag(BANANA_TAG))
         {
             collision.GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -71,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Banana"))
+        if (collision.CompareTag(BANANA_TAG))
         {
             collision.GetComponent<SpriteRenderer>().enabled = false;
         }
